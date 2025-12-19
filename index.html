@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Segoe Script','Comic Sans MS',cursive}
+
+.page{
+  position:fixed;
+  inset:0;
+  display:none;
+}
+.page.active{display:flex}
+
+/* ---------- PAGE 1 ---------- */
+#page1{
+  background:#fff;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+button{
+  padding:12px 26px;
+  font-size:1rem;
+  margin:10px;
+  border-radius:25px;
+  border:none;
+  cursor:pointer;
+}
+
+/* ---------- PAGE 2 ---------- */
+#page2{
+  background:linear-gradient(135deg,#ff9acb,#ffd1e8,#ffe6f2);
+  overflow:hidden;
+}
+
+#hearts{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+.heart{
+  position:absolute;
+  top:-20px;
+  font-size:20px;
+  color:#ff69b4;
+  opacity:0.35;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  to{transform:translateY(120vh);}
+}
+
+#page2Content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  text-align:center;
+  padding:30px 16px 120px;
+  overflow-y:auto;
+}
+
+.msg{display:none;margin:50px auto;font-size:1.2rem;max-width:520px}
+.spacer{height:600px}
+#choices{display:none}
+
+/* ---------- PAGE 3 ---------- */
+#page3{
+  background:#000;
+  color:#fff;
+  align-items:center;
+  justify-content:center;
+}
+
+#ribbon{
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:32px;
+  display:none;
+}
+
+#p3text{
+  position:absolute;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  font-size:1.2rem;
+  display:none;
+}
+
+/* ---------- PAGE 4 ---------- */
+#page4{
+  background:#fff;
+}
+
+#drawCanvas{
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
+
+/* ---------- PAGE 5 ---------- */
+#page5{
+  background:linear-gradient(135deg,#ffafbd,#ffc3a0);
+  color:#4a0033;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  opacity:0;
+  transition:opacity 1.8s ease;
+}
+
+#page5.reveal{
+  opacity:1;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <div>
+    <h1>Is it Dhikshika ?</h1>
+    <button onclick="yesP1()">Yes</button>
+    <button onclick="noP1()">No</button>
+    <div id="noText"></div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div id="hearts"></div>
+  <div id="page2Content">
+    <h2>MADAM ORU GOOD NEWS</h2>
+
+    <div class="msg" id="m1">
+      oru valiya unga moon 🌕 ku suthi vara oru world 🌍 kedachitaga
+    </div>
+
+    <div class="msg" id="m2">
+      Ungaluku tha na avagala first katanum nu nenaikura...<br><br>
+      So can you please scroll
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="msg" id="m3">
+      En Angel la pakkanum na oru condition...<br><br>
+      Avaga Azhaga pathu neenga poramai pada kudathu
+    </div>
+
+    <div id="choices">
+      <button onclick="goPage3()">Mm</button>
+      <button onclick="noAngel()">Illa na pakkala</button>
+      <div id="choiceNote"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div id="ribbon">🎀</div>
+  <div id="p3text">
+    Pothum pothum ... Aprm en thangoo mela kannu patudum
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+  <canvas id="drawCanvas"></canvas>
+  <div style="position:absolute;top:40%;width:100%;text-align:center;color:#555;font-size:1.2rem;pointer-events:none">
+    Draw a heart ❤️
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+  <div>
+    <h1>Every line you draw…</h1>
+    <p>is one more reason why this journey matters to me 💕</p>
+  </div>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function noP1(){
+  noText.innerText='Madam neenga tha nu therium ennaku';
+}
+
+function yesP1(){
+  showPage('page2');
+  createHearts();
+  setTimeout(()=>m1.style.display='block',5000);
+  setTimeout(()=>m2.style.display='block',10000);
+  setTimeout(()=>{m3.style.display='block';choices.style.display='block'},15000);
+}
+
+function createHearts(){
+  hearts.innerHTML='';
+  for(let i=0;i<25;i++){
+    let h=document.createElement('div');
+    h.className='heart';
+    h.innerHTML='❤';
+    h.style.left=(i*4)+'vw';
+    h.style.animationDuration=(8+Math.random()*6)+'s';
+    hearts.appendChild(h);
+  }
+}
+
+function noAngel(){
+  choiceNote.innerText='Aprm yen madam ivalo scroll panniga';
+}
+
+function goPage3(){
+  showPage('page3');
+  setTimeout(()=>{
+    ribbon.style.display='block';
+    p3text.style.display='block';
+    page3.onclick=()=>showPage('page4');
+  },5000);
+}
+
+/* PAGE 4 → HEART MASK REVEAL */
+const canvas=document.getElementById('drawCanvas');
+const ctx=canvas.getContext('2d');
+let drawing=false, points=0, revealed=false;
+
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize(); window.onresize=resize;
+
+canvas.onpointerdown=()=>drawing=true;
+canvas.onpointerup=()=>drawing=false;
+
+canvas.onpointermove=e=>{
+  if(!drawing || revealed) return;
+  ctx.fillStyle='#ff5f9e';
+  ctx.beginPath();
+  ctx.arc(e.clientX,e.clientY,4,0,Math.PI*2);
+  ctx.fill();
+  points++;
+
+  if(points>140){
+    revealed=true;
+
+    showPage('page5');
+    page5.classList.add('reveal');
+
+    // Fade Page 4
+    page4.style.transition='opacity 1.8s ease';
+    page4.style.opacity='0';
+
+    setTimeout(()=>showPage('page5'),1800);
+  }
+};
+</script>
+
+</body>
+</html>
